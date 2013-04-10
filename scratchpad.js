@@ -12,7 +12,7 @@
 // @exclude	http*://w3.tbd.my/xmlhttp.php*
 // @exclude	http*://w3.tbd.my/ch.php
 // @exclude http*://w3.tbd.my/us/*
-// @version     2.0.202
+// @version     2.0.202c
 // ==/UserScript==
 //
 
@@ -68,12 +68,13 @@ var GMTBD = function(jquery){
 					[align=left]Message: '+TBDRequest.message+'[/align]\
 					[align=left]Websocket: '+TBDRequest.socket+'[/align]\
 					[align=left]Location: '+TBDRequest.location+'[/align]\
+					[align=left]***** Debug *****[/align]\
 					[/spoiler]');
 			}else {
 				for (var i=0; i<uselists.length; i++) {
-				var fn = 'TBDPlugin'+uselists[i];
-				fn = unsafeWindow[fn];
-				if (typeof fn !== 'undefined' && (TBDDebug===true || TBDRequest.userid !== TBDSession.userid)){
+					var fn = 'TBDPlugin'+uselists[i];
+					fn = unsafeWindow[fn];
+					if (typeof fn !== 'undefined' && (TBDDebug===true || TBDRequest.userid !== TBDSession.userid) ){
 					var re = (typeof fn.regexFlag === 'undefined')? new RegExp(fn.regex): new RegExp(fn.regex,fn.regexFlag);
 					if (re.test(String(TBDRequest.message))){
 						TBD_log('Test success for '+uselists[i]);
@@ -118,7 +119,7 @@ var GMTBD = function(jquery){
                   TBD_log('exec[done]: HTTP POST CHAT ');
                   if (data === String("flood|0")){
                       TBD_log('exec[flood]: HTTP POST CHAT ');
-                      setTimeout(function(){TBDHttp.post_chat(msg);},800);
+                      window.setTimeout(function(){TBDHttp.post_chat(msg);},1000);
                   }
     		},
     		xhrFields: {
@@ -241,7 +242,7 @@ var GMTBD = function(jquery){
 							TBDRequest.message = d.shout_msg;
 							TBDRequest.username = jquery(d.uname).html();
 							TBDRequest.userid = d.uid;
-							setTimeout(TBDResponse,600);
+							TBDResponse();
 					}
 					TBDRequest.lastid = b;
 	  	};		
